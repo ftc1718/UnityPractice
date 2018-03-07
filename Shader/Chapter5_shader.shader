@@ -11,7 +11,7 @@
             struct vertexData
             {
                 float4 position : POSITION;
-                float4 normal : NORMAL;
+                float3 normal : NORMAL;
                 float4 texcoord : TEXCOORD0;
             };
 
@@ -21,15 +21,26 @@
                 fixed4 color : COLOR0;
             };
 
-            float4 vert(float4 v : POSITION/*input*/) : SV_POSITION/* modify return value.output*/
+            fragmentDate vert(vertexData v)
             {
-                return UnityObjectToClipPos(v);
+                fragmentData frag;
+                frag.position = v.position;
+                frag.color = v.normal * 0.5 + fixed3(0.5, 0.5, 0.5);
+            
+                return frag;
             }
 
-            fixed4 frag() : SV_Target
-            {
-                return fixed4(0.0, 1.0, 1.0, 1.0);
-            }
+            // float4 vert(float4 v : POSITION/*input*/) : SV_POSITION/* modify return value.output*/
+            // {
+            //     return UnityObjectToClipPos(v);
+            // }
+
+            // fixed4 frag() : SV_Target
+            // {
+            //     return fixed4(0.0, 1.0, 1.0, 1.0);
+            // }
+
+
             ENDCG
         }
     }
