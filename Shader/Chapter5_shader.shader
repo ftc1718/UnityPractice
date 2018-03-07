@@ -8,7 +8,20 @@
             #pragma vertex vert
             #pragma fragment frag
 
-            float4 vert(float4 v : POSITION/*input*/) : SV_POSITION/*output*/
+            struct vertexData
+            {
+                float4 position : POSITION;
+                float4 normal : NORMAL;
+                float4 texcoord : TEXCOORD0;
+            };
+
+            struct fragmentData
+            {
+                float4 position : SV_POSITION;
+                fixed4 color : COLOR0;
+            };
+
+            float4 vert(float4 v : POSITION/*input*/) : SV_POSITION/* modify return value.output*/
             {
                 return UnityObjectToClipPos(v);
             }
