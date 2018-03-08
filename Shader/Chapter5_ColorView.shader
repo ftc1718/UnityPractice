@@ -1,6 +1,8 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader"Unlit/Chapter5_shader"
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader"Unlit/Chapter5_ColorView"
 {
     Properties
     {
@@ -16,14 +18,7 @@ Shader"Unlit/Chapter5_shader"
 
             #include "UnityCG.cginc"
 
-            fixed4 _Color;
-
-            struct vertexData
-            {
-                float4 position : POSITION;
-                float3 normal : NORMAL;
-                float4 texcoord : TEXCOORD0;
-            };
+            uniform fixed4 _Color; //the keyword 'uniform' can be omitted in unity
 
             struct fragmentData
             {
@@ -31,20 +26,24 @@ Shader"Unlit/Chapter5_shader"
                 fixed4 color : COLOR;
             };
 
-            fragmentData vert(vertexData v)
+            fragmentData vert(appdata_full v)
             {
                 fragmentData frag;
-                frag.position = UnityObjectToClipPos(v.position);
-                frag.color = fixed4(v.normal * 0.5 + fixed3(0.5, 0.5, 0.5), 1.0); // change vertex normal value to (0, 1)
-                //frag.color = fixed4(v.normal, 1.0);
+                frag.position = UnityObjectToClipPos(v.vertex);
+//                frag.color = fixed4(v.normal * 0.5 + fixed3(0.5, 0.5, 0.5), 1.0); // change vertex normal value to (0, 1)
+
+//				frag.color = fixed4(v.tangent * 0.5 + fixed3(0.5, 0.5, 0.5), 1.0);
+
+                frag.color = fixed4(v.texcoord.xy, 0.0, 1.0); 
+ //               frag.color = fixed4(v.texcoord1.xy, 0.0, 1.0); 
+//                frag.color = v.color;
+				//frag.color = fixed4
             
                 return frag;
             }
 
             fixed4 frag(fragmentData i) : COLOR
             {
-               // i.color = fixed4(1, 0, 0, 1);
-                i.color *= _Color;
                 return i.color;
             }
 
